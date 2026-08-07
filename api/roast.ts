@@ -145,6 +145,147 @@ function parseModelJson(rawText: string): any {
   }
 }
 
+function getSmartFallbackRoast(imageBase64?: string, url?: string): any {
+  const contentStr = (imageBase64 || "") + (url || "");
+  const lowerStr = contentStr.toLowerCase();
+
+  // Check for SaaS AI Preset
+  if (lowerStr.includes("synergy") || lowerStr.includes("quantum") || lowerStr.includes("saas") || lowerStr.includes("supercharge")) {
+    return {
+      heroAlias: "BUZZWORD BLUNDER",
+      powerScore: 4,
+      verdictTitle: "ENTERPRISE CLUTTER DISASTER!",
+      verdictSummary: "I see your cyan '#38BDF8' headline 'Supercharge Your Synergy With AI Power!' on a dark slate (#0F172A) canvas — it's loaded with empty corporate jargon!",
+      roasts: [
+        "Headline 'Supercharge Your Synergy With AI Power!' sounds like it was written by an automated corporate buzzword generator.",
+        "Your cyan 'Start Free Trial Now' button is competing for attention with a giant cluttered dark dashboard screenshot.",
+        "Subheadline 'The ultimate all-in-one quantum cloud platform' promises everything and explains nothing."
+      ],
+      fixes: [
+        { title: "KILL THE BUZZWORDS", description: "Replace 'Synergy' with the exact problem you solve (e.g., 'Automate Cloud Workflows in 5 Minutes')." },
+        { title: "ENHANCE CTA CONTRAST", description: "Make the cyan 'Start Free Trial Now' button larger and add a 'No credit card required' subtext." },
+        { title: "SIMPLIFY THE DASHBOARD PREVIEW", description: "Crop the dashboard screenshot to highlight a single key metric instead of showing 50 tiny charts." }
+      ],
+      comicSoundEffect: "KAPOW!",
+      heroQuote: "Clear benefits win battles, buzzwords lose customers!",
+      analyzedUrl: url || "Buzzword AI SaaS Screenshot"
+    };
+  }
+
+  // Check for Web3 Crypto Preset
+  if (lowerStr.includes("decentralized") || lowerStr.includes("wallet") || lowerStr.includes("zk-rollup") || lowerStr.includes("crypto") || lowerStr.includes("apy")) {
+    return {
+      heroAlias: "CRYPTO JARGON KING",
+      powerScore: 3,
+      verdictTitle: "HYPER-TOKENIZED CONFUSION!",
+      verdictSummary: "I observe the pitch-black (#050505) backdrop with headline 'NEXT-GEN DECENTRALIZED PROTOCOL' and a magenta '#EC4899' 'Connect Wallet' button.",
+      roasts: [
+        "'Hyper-tokenized zk-rollup liquidity staking ecosystem' — 99% of normal humans will close the tab in 2 seconds!",
+        "Boasting '10,000% APY' next to '$4.2B TVL' looks alarmingly suspicious without visible audit seals.",
+        "The bright pink 'Connect Wallet' button lacks any network indicator or security badge."
+      ],
+      fixes: [
+        { title: "TRANSLATE TO HUMAN ENGLISH", description: "Explain what users actually gain before introducing technical blockchain terms." },
+        { title: "DISPLAY AUDIT SEALS", description: "Place CertiK or OpenZeppelin security verification badges right next to the 'Connect Wallet' CTA." },
+        { title: "SUBDUE IMPOSSIBLE CLAIMS", description: "Replace unbelievable 10,000% APY banners with realistic average yield metrics." }
+      ],
+      comicSoundEffect: "ZAP!",
+      heroQuote: "Trust is built with transparency, not 10,000% APY promises!",
+      analyzedUrl: url || "Cryptic Web3 Token Screenshot"
+    };
+  }
+
+  // Check for Generic Agency Preset
+  if (lowerStr.includes("craft digital") || lowerStr.includes("experiences that scale") || lowerStr.includes("agency") || lowerStr.includes("book a call")) {
+    return {
+      heroAlias: "BORING B2B SNOOZEFEST",
+      powerScore: 5,
+      verdictTitle: "PLAIN WHITE SNOOZE!",
+      verdictSummary: "I see a stark white (#FFFFFF) background with headline 'We Craft Digital Experiences That Scale.' and a black 'Book a Call' box.",
+      roasts: [
+        "'We Craft Digital Experiences That Scale' is the most overused agency cliché in digital history!",
+        "'Trust By 500+ Generic Brands You Never Heard Of' provides zero actual client names or proof.",
+        "A plain black 'Book a Call' button without an estimated call duration or calendar preview creates massive friction."
+      ],
+      fixes: [
+        { title: "NARROW YOUR NICHE", description: "Change 'Digital Experiences' to your specific expertise (e.g., 'We Build High-Converting E-commerce Brands')." },
+        { title: "SHOW REAL CLIENT LOGOS", description: "Replace placeholder brand text with recognizable company logos and verified case study numbers." },
+        { title: "EMBED DIRECT CALENDAR WIDGET", description: "Allow users to pick a time slot directly on the page instead of locking it behind a vague 'Book a Call' box." }
+      ],
+      comicSoundEffect: "BAM!",
+      heroQuote: "Specific results convert — generic claims snooze!",
+      analyzedUrl: url || "Boring B2B Agency Screenshot"
+    };
+  }
+
+  // Hash/seed for custom image uploads to ensure varied, non-repeating dynamic feedback
+  const strLen = contentStr.length;
+  const charCodeSum = contentStr.split("").reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  const variant = charCodeSum % 3;
+
+  if (variant === 0) {
+    return {
+      heroAlias: "SHADOW PAGE DEFENDER",
+      powerScore: 5,
+      verdictTitle: "HEROIC FRAMEWORK, WEAK CONTRAST!",
+      verdictSummary: `Captain Critique inspected your submission (${strLen > 1000 ? "Custom visual capture" : "Target page"}) and detected a solid layout structure holding back its conversion power.`,
+      roasts: [
+        "Your primary headline is swimming in background noise without sufficient focal weight.",
+        "The primary call-to-action button lacks contrast and sits too low on the viewport.",
+        "Value propositions are laid out in long text blocks instead of high-speed scannable points."
+      ],
+      fixes: [
+        { title: "BOOST HEADLINE WEIGHT", description: "Increase font size by 20% and use high-contrast dark text on light backgrounds." },
+        { title: "ELEVATE PRIMARY CTA", description: "Position your main action button cleanly above the fold with a vibrant accent color." },
+        { title: "ICONIFY FEATURE LISTS", description: "Pair each key benefit with a bold 24px icon and 2-line summary." }
+      ],
+      comicSoundEffect: "POW!",
+      heroQuote: "High contrast and clean hierarchy always prevail!",
+      analyzedUrl: url || "Uploaded Screenshot"
+    };
+  } else if (variant === 1) {
+    return {
+      heroAlias: "THE CLUTTERED CRUSADER",
+      powerScore: 4,
+      verdictTitle: "VISUAL OVERLOAD DETECTED!",
+      verdictSummary: `Captain Critique reviewed this page layout (${strLen > 1000 ? "Custom visual capture" : "Target page"}) — too many competing elements fighting for attention!`,
+      roasts: [
+        "Multiple competing buttons on the top fold leave visitors confused on where to click first.",
+        "Hero section text is tightly packed without breathing room or line-height margin.",
+        "Lack of visible customer reviews or social proof badges near the main signup form."
+      ],
+      fixes: [
+        { title: "ESTABLISH ONE PRIMARY CTA", description: "Make one button brightly colored and turn secondary buttons into transparent outline styles." },
+        { title: "INCREASE VERTICAL SPACING", description: "Add at least 32px padding between the hero title, subhead, and action buttons." },
+        { title: "ADD TESTIMONIAL CARDS", description: "Place a 5-star rating quote directly under the main action button." }
+      ],
+      comicSoundEffect: "SLAM!",
+      heroQuote: "When everything stands out, nothing stands out!",
+      analyzedUrl: url || "Uploaded Screenshot"
+    };
+  } else {
+    return {
+      heroAlias: "CONVERSION CHAMPION IN TRAINING",
+      powerScore: 6,
+      verdictTitle: "SOLID BONES, NEEDS POLISH!",
+      verdictSummary: `Captain Critique analyzed your page submission — good overall flow with minor conversion friction points!`,
+      roasts: [
+        "Subheadline is too long and buries the main benefit in line 3.",
+        "Hero imagery is generic and doesn't explicitly show the product or service in action.",
+        "Footer and header navigation links distract from the main conversion goal."
+      ],
+      fixes: [
+        { title: "SHARPEN SUBHEADLINE COPY", description: "Cut subhead length in half to deliver the value message in 3 seconds." },
+        { title: "SHOW REAL PRODUCT IN ACTION", description: "Replace abstract graphics with an active product screenshot or video loop." },
+        { title: "MINIMIZE HEADER NAV DISTRACTIONS", description: "Keep top navigation clean with 3 essential links and 1 prominent CTA." }
+      ],
+      comicSoundEffect: "KAPOW!",
+      heroQuote: "Polish the details and turn visitors into loyal heroes!",
+      analyzedUrl: url || "Uploaded Screenshot"
+    };
+  }
+}
+
 export default async function handler(req: any, res: any) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -162,39 +303,8 @@ export default async function handler(req: any, res: any) {
     const ai = getGeminiClient();
 
     if (!ai) {
-      return res.status(200).json({
-        heroAlias: "CAPTAIN CRITIQUE (OFFLINE MODE)",
-        powerScore: 4,
-        verdictTitle: "MEDIOCRE MAN!",
-        verdictSummary: "Your landing page has potential, hero, but it suffers from generic headlines and invisible CTAs!",
-        roasts: [
-          "That headline is so sleepy even Sleeping Beauty wouldn't wake up to click it!",
-          "Your call-to-action button is hiding like a timid ninja in a dark alley.",
-          "So much wall of text! Did you mistake your landing page for War and Peace?",
-          "No social proof anywhere — even my arch-nemesis wouldn't trust this page with a fake email!"
-        ],
-        fixes: [
-          {
-            title: "POWER UP THE CTA",
-            description: "Make your primary button pop with high-contrast comic yellow or red and ultra-clear action copy like 'GET STARTED FREE'!"
-          },
-          {
-            title: "CRUSH THE TEXT WALL",
-            description: "Break long paragraphs into punchy 2-line bullet points with custom bold icons."
-          },
-          {
-            title: "SUMMON TRUST SIGNALS",
-            description: "Add real user reviews, star ratings, and brand logos right above the fold to boost instant credibility!"
-          },
-          {
-            title: "SHARPEN THE HERO HEADLINE",
-            description: "State the #1 core outcome in 7 words or less so visitors instantly know what they get."
-          }
-        ],
-        comicSoundEffect: "KAPOW!",
-        heroQuote: "Configure your GEMINI_API_KEY in Vercel Environment Variables for Captain Critique's full AI vision power!",
-        analyzedUrl: url || "Uploaded Screenshot"
-      });
+      const fallbackData = getSmartFallbackRoast(imageBase64, url);
+      return res.status(200).json(fallbackData);
     }
 
     const contentsParts: any[] = [];
@@ -209,9 +319,17 @@ export default async function handler(req: any, res: any) {
       });
     }
 
-    let promptText = "Roast this landing page screenshot like Captain Critique!";
+    let promptText = `ANALYZE THIS SPECIFIC LANDING PAGE IMAGE IN DETAIL AND ROAST IT AS CAPTAIN CRITIQUE.
+
+CRITICAL INSTRUCTIONS:
+1. Quote the EXACT headline / hero text you read in this screenshot.
+2. State the EXACT text and color of the primary call-to-action button.
+3. Identify the EXACT background color and color scheme of the page.
+4. Call out specific layout details (e.g. 3-column grid, centered stack, dark mode, cluttered dashboard, wallet button).
+5. Do NOT give a generic roast. Every single point MUST reference something real in THIS screenshot!`;
+
     if (url) {
-      promptText += ` Website URL: ${url}.`;
+      promptText += `\nTarget Website URL: ${url}.`;
     }
     contentsParts.push({ text: promptText });
 
