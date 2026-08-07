@@ -2,6 +2,7 @@ import React, { useState, useRef, DragEvent, ChangeEvent } from "react";
 import { Upload, Link as LinkIcon, Image as ImageIcon, Flame, X, Check, Sparkles } from "lucide-react";
 import { PRESET_SAMPLES } from "../data/presetSamples";
 import { PresetSample } from "../types";
+import { rasterizeSvgToPng } from "../utils/imageUtils";
 
 interface UploadZoneProps {
   onRoastSubmit: (data: { imageBase64?: string; mimeType?: string; url?: string }) => void;
@@ -66,13 +67,16 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ onRoastSubmit, isLoading
     }
   };
 
-  const handleSelectPreset = (preset: PresetSample) => {
+  const handleSelectPreset = async (preset: PresetSample) => {
     setSelectedPreset(preset.id);
-    setImagePreview(preset.thumbnail);
-    setMimeType("image/svg+xml");
-    setUrlInput(preset.url);
     setSelectedFile(null);
     setValidationError(null);
+    setUrlInput(preset.url);
+
+    // Convert SVG preset to clean PNG Data URL for Gemini Vision
+    const pngBase64 = await rasterizeSvgToPng(preset.thumbnail);
+    setImagePreview(pngBase64);
+    setMimeType("image/png");
   };
 
   const handleClearImage = () => {
@@ -84,7 +88,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ onRoastSubmit, isLoading
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setValidationError(null);
 
@@ -93,9 +97,17 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ onRoastSubmit, isLoading
       return;
     }
 
+    let finalPayloadImage = imagePreview;
+    let finalMimeType = mimeType;
+
+    if (imagePreview && (imagePreview.includes("svg") || mimeType.includes("svg"))) {
+      finalPayloadImage = await rasterizeSvgToPng(imagePreview);
+      finalMimeType = "image/png";
+    }
+
     onRoastSubmit({
-      imageBase64: imagePreview || undefined,
-      mimeType,
+      imageBase64: finalPayloadImage || undefined,
+      mimeType: finalMimeType,
       url: urlInput.trim() || undefined,
     });
   };
